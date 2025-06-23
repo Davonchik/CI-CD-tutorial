@@ -1,0 +1,23 @@
+name: .NET CI
+on: 
+  push:
+    branches: [main]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Install .NET Format
+        run: dotnet tool install -g dotnet-format
+      - name: Run Linter
+        run: dotnet format --verify-no-changes
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Run Tests
+        run: dotnet test --no-build --configuration Release
