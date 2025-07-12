@@ -132,16 +132,17 @@
 Пример простого этапа деплоя по SSH:
 
 ```yaml
-- name: Deploy to VPS via SSH
+- name: Deploy to VPS
   uses: appleboy/ssh-action@v0.1.10
   with:
-	host: ${{ secrets.SERVER_HOST }}
-	username: ${{ secrets.SERVER_USER }}
-	key: ${{ secrets.SERVER_SSH_KEY }}
-	script: |
-	cd /var/www/myapp
-	git pull
-	systemctl restart myapp.service
+    host: ${{ secrets.SERVER_HOST }}
+    username: ${{ secrets.SERVER_USER }}
+    key: ${{ secrets.SERVER_SSH_KEY }}
+    script: |
+      cd /var/www/myapp
+      git pull
+      dotnet build -c Release
+      systemctl restart myapp
 ```
 
 > 💡 Этот шаг работает только если у вас есть сервер и настроен SSH-доступ. Данные хранятся в GitHub Secrets — это безопасное место для ключей и паролей.
@@ -191,6 +192,21 @@ runs-on: ${{ matrix.os }}
 **📝 Задание 2. Добавьте деплой по SSH**
 - Используйте appleboy/ssh-action, как в примере выше.
 - Настройте Secrets: SERVER_HOST, SERVER_USER, SERVER_SSH_KEY.
+- Пример деплойного шага:
+```yaml
+- name: Deploy to VPS
+  uses: appleboy/ssh-action@v0.1.10
+  with:
+    host: ${{ secrets.SERVER_HOST }}
+    username: ${{ secrets.SERVER_USER }}
+    key: ${{ secrets.SERVER_SSH_KEY }}
+    script: |
+      cd /var/www/myapp
+      git pull
+      dotnet build -c Release
+      systemctl restart myapp
+```
+> 💡 Если у вас пока нет сервера, рекомендую ознакомиться с теорией CD (см. раздел выше), и по возможности попробовать позже — это ценный навык для любого backend-разработчика.
 
 **🧰 Задание 3. Используйте Matrix для тестирования**
 - Добавьте strategy.matrix с os: [ubuntu-latest, windows-latest]
