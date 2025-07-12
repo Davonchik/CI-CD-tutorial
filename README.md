@@ -133,8 +133,8 @@
 
 ```yaml
 - name: Deploy to VPS via SSH
-	uses: appleboy/ssh-action@v0.1.10
-	with:
+  uses: appleboy/ssh-action@v0.1.10
+  with:
 	host: ${{ secrets.SERVER_HOST }}
 	username: ${{ secrets.SERVER_USER }}
 	key: ${{ secrets.SERVER_SSH_KEY }}
